@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-""" a script that starts a Flask web application """
-from flask import Flask
-from flask import render_template
+"""script that starts a Flask web application"""
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -24,32 +23,32 @@ def c_is_fun(text):
 
 
 @app.route("/python/<text>", strict_slashes=False)
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 def python(text):
     if "_" in text:
         text = text.replace("_", " ")
     return f"Python {text}"
 
 
-@app.route("/python", strict_slashes=False)
-def python_default():
-    return f"Python is cool"
+@app.route('/number/<int:n>', strict_slashes=False)
+def number(n):
+    return '{} is a number'.format(n)
 
 
-@app.route("/number/<int:n>", strict_slashes=False)
-def number_only(n):
-    return f"{n} is a number"
-
-
-@app.route("/number_template/<int:n>", strict_slashes=False)
+@app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
-    """ using template for the first time """
-    return render_template("5-number.html", n=n)
+    if isinstance(n, int):
+        return render_template('5-number.html', n=n)
+    else:
+        return
 
 
-@app.route("/number_odd_or_even/<int:n>", strict_slashes=False)
-def number_odd(n):
-    """ using template for the first time """
-    return render_template("6-number_odd_or_even.html", n=n)
+@app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
+def number_odd_or_even(n):
+    if isinstance(n, int):
+        return render_template('6-number_odd_or_even.html', n=n)
+    else:
+        return
 
 
 if __name__ == "__main__":
