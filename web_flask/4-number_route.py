@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" a script that starts a Flask web application """
+"""script that starts a Flask web application"""
 from flask import Flask
 
 app = Flask(__name__)
@@ -23,23 +23,16 @@ def c_is_fun(text):
 
 
 @app.route("/python/<text>", strict_slashes=False)
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 def python(text):
     if "_" in text:
         text = text.replace("_", " ")
     return f"Python {text}"
 
 
-@app.route("/python", strict_slashes=False)
-def python_default():
-    return f"Python is cool"
-
-
-@app.route("/number/<int:n>", strict_slashes=False)
-def number_only(n):
-    if isinstance(n, int):
-        return f"{n} is a number"
-    else:
-        return
+@app.route('/number/<int:n>', strict_slashes=False)
+def number(n):
+    return '{} is a number'.format(n)
 
 
 if __name__ == "__main__":
