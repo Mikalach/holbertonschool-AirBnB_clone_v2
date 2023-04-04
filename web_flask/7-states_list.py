@@ -1,36 +1,31 @@
 #!/usr/bin/python3
-""" A script that starts a Flask web application with storage """
+"""
+Script that starts a Flask web application
+"""
+
+from flask import Flask, render_template
 from models import storage
-from flask import Flask
-from flask import render_template
+from models.state import State
+
 
 app = Flask(__name__)
 
 
-@app.route("/states_list", strict_slashes=False)
-def listing():
-    from models.state import State
-
-    State_item = storage.all(State)
-    niice = {}
-    var_id = ""
-    var_name = ""
-    for _, v in State_item.items():
-        for k, x in v.to_dict().items():
-            if k == "id":
-                var_id = x
-            if k == "name":
-                var_name = x
-                niice[var_id] = var_name
-    return render_template("7-states_list.html", state_item=niice)
-
-
 @app.teardown_appcontext
-def close_db(error):
-    from models.engine.db_storage import DBStorage
-    if isinstance(storage, DBStorage):
-        storage.close()
+def teardown_db(self):
+    """remove the current SQLAlchemy Session"""
+    storage.close()
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route('/states_list', strict_slashes=False)
+def display_states_list():
+    """
+    Displays a HTML page with a list of all State objects present in DBStorage
+    """
+    states = storage.all(State).values()
+    sorted_states = sorted(states, key=lambda state: state.name)
+    return render_template('7-states_list.html', states=sorted_states)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
