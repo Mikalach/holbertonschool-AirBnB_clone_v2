@@ -9,10 +9,8 @@ from models.city import City
 app = Flask(__name__)
 
 
-
 @app.route('/cities_by_states', strict_slashes=False)
 def cities_by_states():
-    
     states = storage.all(State).values()
     cities = storage.all(City).values()
     return render_template('8-cities_by_states.html',
