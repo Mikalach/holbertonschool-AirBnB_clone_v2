@@ -14,6 +14,7 @@ def hello_world():
 def display():
     return "HBNB"
 
+
 @app.route("/c/<text>", strict_slashes=False)
 def c_is_fun(text):
     if "_" in text:
