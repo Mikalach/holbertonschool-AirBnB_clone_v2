@@ -28,8 +28,8 @@ def listStateCities(id):
     for state in statesList.values():
         print(str(state.id) + " ===" + str(id))
         if str(state.id) == str(id):
-            return render_template("9-states.html", states=state,
-                                    cities=citiesList)
+            return render_template("9-states.html",
+                                   states=state, cities=citiesList)
     return render_template("9-states.html", cities=citiesList)
 
 
